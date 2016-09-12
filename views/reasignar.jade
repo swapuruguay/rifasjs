@@ -1,0 +1,52 @@
+extends ./layout.jade
+block contenido
+    form(method='post', action='reasigna').form-horizontal
+        .form-group
+            label.control-label.col-md-1 Origen
+            .col-md-3
+                input.form-control(type="text", id="origen", name="origen" value="#{nombre}")
+                input(type='hidden' id='nro', name='nro' data-nro="#{nro}", data-viejo="#{id_vendedor}", data-anio="#{anio}")
+                
+        .form-group
+            label.control-label.col-md-1 Destino
+            .col-md-3
+                input.form-control(type="text", id="destino", name="destino")
+                input(type="hidden", id="id", name="id")
+            .col-md-2
+                span#nombre 
+        .form-group
+            button#boton.btn.btn-primary(type="button") Guardar
+        .alert.alert-success(style='display:none;')
+          p
+        script.
+            $('#destino').keyup(function(ev) {
+                if($(this).val() == '') {
+                    $('#nombre').html('')
+                    $('#id').val('')
+                } else {
+                    var texto = $(this).val()
+                    $.post('/buscarnombre', {nombre: texto}, function(result) {
+                        if(result.filas[0].nombre != $("#origen").val())
+                            $('#nombre').html(result.filas[0].nombre) 
+                            $('#id').val(result.filas[0].id_vendedor)   
+                    }, 'json')    
+                }
+                
+             })
+             
+             $('#boton').click(function(ev) {
+               ev.preventDefault()
+               cambiar()
+             })
+             
+             function cambiar() {
+                var vendedor = $('#id').val()
+                var obj = $('#nro')
+                var nro = obj.data('nro')
+                var viejo = obj.data('viejo')
+                var anio = obj.data('anio') 
+                $.post('/reasigna', {nro: nro, vendedor: vendedor, viejo: viejo, anio: anio}, function(resp) {
+                  $('.alert > p').html('Correcto')
+                  $('.alert').show()    
+                },'json')       
+             }

@@ -1,0 +1,18 @@
+extends ./layout.jade
+block contenido
+    .container
+        table#tabla.table-bordered.table-condensed.table-striped
+            tr
+                th Nombre
+                th Sin Vender
+            if filas
+                
+                each val in filas
+                    
+                    tr
+                        td
+                          a(href="/buscar/v/#{val.id_vendedor}")= val.nombre
+                        td= val.saldos
+                tr
+                    td Total
+                    td= total

@@ -1,0 +1,78 @@
+extends ./layout.jade
+block contenido
+  h2 Buscar nros
+  p
+  form(method="post", action="/buscar/n").form-horizontal 
+    .col-md-3
+      .form-group
+        label Búsqueda por nro
+        input(type="text" name="id", id="familia" class="form-control")
+        
+      .form-group
+        button(type="submit" class="btn btn-primary") Buscar
+      p
+    .col-md-12
+      p
+    #resultado
+          if filas
+              table.table.table-condensed.table-bordered
+                tr
+                  th.text-center Nombre
+                  th.text-center Nro
+                  th.text-center Estado
+                  th.text-center Pagar cuota
+                  th.text-center Pago Contado
+                  th.text-center Reasignar
+                  th.text-center Devolver
+                each val in filas
+                    case val.estado
+                        when 1
+                            if val.reasignado
+                                tr(style="background:yellow;")
+                                    td.text-center #{val.nombre}
+                                    td.text-right #{val.nro}
+                                    td.text-center #{val.est}
+                                    td.text-center
+                                        a(href="/cuota/1/#{val.id_nro}") Cuota 1
+                                    td.text-center 
+                                        a(href="/cuota/3/#{val.id_nro}") Contado
+                                    td.text-center 
+                                        a(href="/reasignar/#{val.id_nro}") Reasignar
+                                      td
+                                        a(href="/devolver/#{val.id_nro}") Devolver
+                            else
+                                tr    
+                                    td.text-center #{val.nombre}
+                                    td.text-right #{val.nro}
+                                    td.text-center #{val.est}
+                                    td.text-center
+                                        a(href="/cuota/1/#{val.id_nro}") Cuota 1
+                                    td.text-center 
+                                        a(href="/cuota/3/#{val.id_nro}") Contado
+                                    td.text-center 
+                                        a(href="/reasignar/#{val.id_nro}") Reasignar
+                                      td
+                                        a(href="/devolver/#{val.id_nro}") Devolver
+                        when 2
+                            tr
+                              td.text-center #{val.nombre}
+                              td.text-right #{val.nro}
+                              td.text-center #{val.est}
+                              td(colspan="4" class="text-center")
+                                a(href="/cuota/2/#{val.id_nro}") Cuota 2
+                              
+                        when 3
+                            tr(style="background:green;")
+                              td.text-center #{val.nombre}
+                              td.text-right #{val.nro}
+                              td.text-center #{val.est}
+                              td(colspan="4" class="text-center") Vendido
+                              
+                        default
+                            tr(style="background: red; color:#FFFFFF;")
+                              td.text-center #{val.nombre}
+                              td.text-right #{val.nro}
+                              td.text-center #{val.est}
+                              td(colspan="4" class="text-center")
+                                a(href="/reasignar/#{val.id_nro}") Reasignar
+                              

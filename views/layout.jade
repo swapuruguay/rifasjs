@@ -1,0 +1,89 @@
+doctype html
+html
+  head
+    title Rifas - 2016
+    meta(name="viewport", content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0")
+    link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", rel="stylesheet")
+    script(src='https://code.jquery.com/jquery-2.2.4.min.js')
+    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
+    script.
+      $(function() {
+        //alert()
+        var alerta =$('#alerta')
+        var familia = $('#familia')
+        var id = $('#id')
+        $('#alerta').on('click', '.nombres' ,function(ev) {
+        
+          var par = $(this)
+          id.val(par.attr('id'))
+          familia.val(par.html())
+          alerta.hide()
+        })
+        
+        familia.on('keyup', function(ev) {
+          var nombre = familia.val()
+          
+          alerta.html('')
+          alerta.show()
+          $.post('/buscarnombre', {nombre: nombre}, function(res) {
+            for(var i = 0; i< res.filas.length; i++)
+              alerta.append('<p id=\''+res.filas[i].id_vendedor+'\' class=\'nombres\'>'+res.filas[i].nombre+'</p>') 
+          },'json')
+        })
+        
+        familia.keypress(function(evt) {
+          
+          if(evt.keyCode == 13) {
+            evt.preventDefault()
+            var elms = $('#alerta > .nombres')
+            
+            if(elms.length == 1) {
+              id.val(elms.attr('id'))
+              familia.val(elms.html())
+              
+            }
+            
+          }
+          
+        })
+        
+        $('#desde').focus(function(ev) {
+          alerta.hide()
+          alerta.html('')
+      })
+      
+      
+        
+        
+      })
+  body
+    nav.navbar.navbar-default
+      .navbar-header
+        button(type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false")
+          span(class="sr-only") Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a(class="navbar-brand" href="#") CMA
+      .collapse.navbar-collapse(id="bs-example-navbar-collapse-1")
+        ul.nav.navbar-nav
+          li
+            a(href="/") Inicio
+          li.dropdown
+            a(href="#" class="dropdown-toggle" data-toggle="dropdown" role="button") Buscar
+              span.caret
+            ul.dropdown-menu
+              li
+                a(href="/buscar/v") Por Vendedor
+              li
+                a(href="/buscar/n") Por Nro.
+              li
+                a(href="/faltantes") Faltantes
+              li
+                a(href="/devueltos") Devueltos
+          
+    .container
+      h1.text-center CMA
+        span &nbsp
+        small 2016
+      block contenido

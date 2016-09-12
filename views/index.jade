@@ -1,0 +1,30 @@
+extends ./layout.jade
+block contenido
+  h2.text-center Ingreso de nros
+  .col-md-3
+    form(method="POST" action="/guardar").form-horizontal.form-login
+      .form-group
+        label(for="familia") Familia
+        input.form-control.input-sm-chat-input(type="text" id="familia" name="familia")
+        .alert.alert-success(style="cursor: pointer; display:none", id="alerta")
+        input(type='hidden', id='id', name='id')
+      .form-group
+        label(for="desde") Desde
+        input.form-control(type="text" id="desde" name="desde")  
+      .form-group
+        label(for="hasta") Hasta
+        input.form-control(type="text", id="hasta", name="hasta")
+      .form-group
+        button(type='submit').btn.btn-success Guardar
+      if msg
+        .alert.alert-warning #{msg}
+        script.
+          $('#familia').focus()
+          setTimeout(function() {
+            $('.alert-warning').fadeOut(1000)  
+          },3000)
+          
+            
+        
+      
+  

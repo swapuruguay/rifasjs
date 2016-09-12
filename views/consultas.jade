@@ -1,0 +1,16 @@
+extends ./layout.jade
+block contenido
+    .container
+            table.table-bordered.table-condensed
+                tr
+                    th Vendidos
+                    th Parciales
+                    th Recaudado
+                    th Sin Vender
+                    th Pendiente
+                tr
+                    td= vendidos
+                    td= parcial
+                    td= recaudado
+                    td= sin
+                    td= pendiente
